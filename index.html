@@ -8,7 +8,10 @@
 
             window.onload = async () => {
                 document.querySelector('form input[type="submit"]')
-                    .addEventListener('click', addNutrient)
+                    .addEventListener('click', async () => { 
+                        await addNutrient()
+                        window.location = window.location.toString().slice(0, -'#new'.length)
+                    })
             }
             async function addNutrient () {
                 // TODO: difference between add and update
@@ -22,14 +25,14 @@
                 for (const c of changes) addToTable(c)
             }
             function addToTable ({ id, doc: { name, carbs }, changes }) {
-                const tr = document.querySelector('tbody')
-                    .appendChild(document.createElement('tr'))
+                const tr = document.getElementById('index')
+                    .appendChild(document.createElement('div'))
                 // tr.addEventListener('click', rowClicked)
                 const rev = changes.pop().rev
                 tr.appendChild(document.createElement('template')).innerText = id
                 tr.appendChild(document.createElement('template')).innerText = rev
-                tr.appendChild(document.createElement('td')).innerText = name
-                tr.appendChild(document.createElement('td')).innerText = carbs
+                tr.appendChild(document.createElement('div')).innerText = name
+                tr.appendChild(document.createElement('div')).innerText = carbs
             }
             function rowClicked ({ target }) {
                 const values = [...target.parentNode.querySelectorAll('tbody *')]
@@ -39,25 +42,25 @@
             }
         </script>
         <style>
-            #new:target table { display: none }
+            #new:target #index { display: none }
             #new:target form { display: block }
             form { display: none; }
+            #index { display: table; }
+            #index > * { display:table-row; }
+            #index > * > * { display:table-cell; }
+            #index > * > template { display:none; }
         </style>
     </head>
     <body id="new">
         <h1>nutrients</h1>
-        <table id="index">
-            <thead>
-                <tr>
-                    <th>name</th>
-                    <th>carbs</th>
-                    <td><a href="#new">new</a></td>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-        <form>
+        <div id="index">
+            <div>
+                <div>name</div>
+                <div>carbs</div>
+                <div><a href="#new">new</a></div>
+            </div>
+        </div>
+        <form action="" method="get">
             <input id="id" type="hidden" readonly>
             <input id="rev" type="hidden" readonly>
             <label for="name">Name</label><input id="name" type="text">
