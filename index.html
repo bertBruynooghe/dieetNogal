@@ -9,13 +9,11 @@
             window.onload = async () => {
                 document.querySelector('form input[type="submit"]')
                     .addEventListener('click', async ({ target }) => {
-                        await addNutrient(target.parentNode)
+                        await setNutrient(target.parentNode)
                         window.location = window.location.toString().slice(0, -'#new'.length)
                     })
             }
-            async function addNutrient (form) {
-                // TODO: difference between add and update
-                
+            async function setNutrient (form) {                
                 const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
                     .map(n => form.querySelector(`[name="${n}"]`).value)
                 const carbs = Number.parseFloat(carbsStr)
@@ -26,14 +24,13 @@
                 for (const c of changes) addToTable(c)
             }
             function addToTable ({ id, doc: { name, carbs }, changes }) {
-                const tr = document.getElementById('index')
-                    .appendChild(document.createElement('div'))
-                // tr.addEventListener('click', rowClicked)
-                const rev = changes.pop().rev
-                tr.appendChild(document.createElement('template')).innerText = id
-                tr.appendChild(document.createElement('template')).innerText = rev
-                tr.appendChild(document.createElement('div')).innerText = name
-                tr.appendChild(document.createElement('div')).innerText = carbs
+                const data = { id, rev: changes.pop().rev, name, carbs }
+                const newRow = document.querySelector('#new > form').cloneNode(true)
+
+                Object.keys(data).forEach(k => newRow
+                    .querySelector(`[name="${k}"]`)
+                    .setAttribute('value', data[k]))
+                document.getElementById('index').appendChild(newRow)
             }
             function rowClicked ({ target }) {
                 const values = [...target.parentNode.querySelectorAll('tbody *')]
@@ -50,6 +47,8 @@
             #index > * { display:table-row; }
             #index > * > * { display:table-cell; }
             #index > * > template { display:none; }
+            #index form a { display: none; }
+            #index label > span { display: none; }
         </style>
     </head>
     <body id="new">
@@ -64,10 +63,10 @@
         <form>
             <input name="id" type="hidden">
             <input name="rev" type="hidden">
-            <label>Name<input name="name" type="text"></label>
-            <label>Carbs<input name="carbs" type="number"></label>
+            <label><span>Name</span><input name="name" type="text"></label>
+            <label><span>Carbs</span><input name="carbs" type="number"></label>
             <a href="#">Back</a>
-            <input type="submit" value="Add">
+            <input type="submit" value="Save">
         </form>
     </body>
 </html>
