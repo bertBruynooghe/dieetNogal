@@ -26,13 +26,13 @@
                     .appendChild(document.createElement('tr'))
                 // tr.addEventListener('click', rowClicked)
                 const rev = changes.pop().rev
-                tr.appendChild(document.createElement('td')).innerText = id
-                tr.appendChild(document.createElement('td')).innerText = rev
+                tr.appendChild(document.createElement('template')).innerText = id
+                tr.appendChild(document.createElement('template')).innerText = rev
                 tr.appendChild(document.createElement('td')).innerText = name
                 tr.appendChild(document.createElement('td')).innerText = carbs
             }
             function rowClicked ({ target }) {
-                const values = [...target.parentNode.querySelectorAll('td')]
+                const values = [...target.parentNode.querySelectorAll('tbody *')]
                     .map(n => n.innerText);
                 ['id', 'rev', 'name', 'carbs']
                     .forEach((v, k) => document.querySelector(`input#${v}`).value = values[k])
@@ -49,8 +49,6 @@
         <table id="index">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>rev</th>
                     <th>name</th>
                     <th>carbs</th>
                     <td><a href="#new">new</a></td>
@@ -60,10 +58,11 @@
             </tbody>
         </table>
         <form>
-            <label for="id">Id</label><input id="id" type="text" readonly>
-            <label for="rev">Rev</label><input id="rev" type="text" readonly>
+            <input id="id" type="hidden" readonly>
+            <input id="rev" type="hidden" readonly>
             <label for="name">Name</label><input id="name" type="text">
             <label for="carbs">Carbs</label><input id="carbs" type="number">
+            <a href="#">Back</a>
             <input type="submit" value="Add">
         </form>
     </body>
