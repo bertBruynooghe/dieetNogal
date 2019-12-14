@@ -8,15 +8,16 @@
 
             window.onload = async () => {
                 document.querySelector('form input[type="submit"]')
-                    .addEventListener('click', async () => { 
-                        await addNutrient()
+                    .addEventListener('click', async ({ target }) => {
+                        await addNutrient(target.parentNode)
                         window.location = window.location.toString().slice(0, -'#new'.length)
                     })
             }
-            async function addNutrient () {
+            async function addNutrient (form) {
                 // TODO: difference between add and update
+                
                 const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
-                    .map(n => document.getElementById(n).value)
+                    .map(n => form.querySelector(`[name="${n}"]`).value)
                 const carbs = Number.parseFloat(carbsStr)
                 const _id = id || new Date().toISOString()
                 await nutrientsDb.put({ _id, _rev, name, carbs })
@@ -60,11 +61,11 @@
                 <div><a href="#new">new</a></div>
             </div>
         </div>
-        <form action="" method="get">
-            <input id="id" type="hidden" readonly>
-            <input id="rev" type="hidden" readonly>
-            <label for="name">Name</label><input id="name" type="text">
-            <label for="carbs">Carbs</label><input id="carbs" type="number">
+        <form>
+            <input name="id" type="hidden">
+            <input name="rev" type="hidden">
+            <label>Name<input name="name" type="text"></label>
+            <label>Carbs<input name="carbs" type="number"></label>
             <a href="#">Back</a>
             <input type="submit" value="Add">
         </form>
