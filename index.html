@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/pouchdb/5.4.5/pouchdb.min.js"></script>
+        <script>
+            const nutrientsDb = new PouchDB('nutrients')
+            nutrientsDb.changes({ since: 0, include_docs: true })
+                .then(changes => applyChanges(changes.results))
+
+            window.onload = async () => {
+                document.querySelector('form input[type="submit"]')
+                    .addEventListener('click', addNutrient)
+            }
+            async function addNutrient () {
+                // TODO: difference between add and update
+                const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
+                    .map(n => document.getElementById(n).value)
+                const carbs = Number.parseFloat(carbsStr)
+                const _id = id || new Date().toISOString()
+                await nutrientsDb.put({ _id, _rev, name, carbs })
+            }
+            function applyChanges (changes) {
+                for (const c of changes) addToTable(c)
+            }
+            function addToTable ({ id, doc: { name, carbs }, changes }) {
+                const tr = document.querySelector('tbody')
+                    .appendChild(document.createElement('tr'))
+                tr.addEventListener('click', rowClicked)
+                const rev = changes.pop().rev
+                tr.appendChild(document.createElement('td')).innerText = id
+                tr.appendChild(document.createElement('td')).innerText = rev
+                tr.appendChild(document.createElement('td')).innerText = name
+                tr.appendChild(document.createElement('td')).innerText = carbs
+            }
+            function rowClicked ({ target }) {
+                const values = [...target.parentNode.querySelectorAll('td')]
+                    .map(n => n.innerText);
+                ['id', 'rev', 'name', 'carbs']
+                    .forEach((v, k) => document.querySelector(`input#${v}`).value = values[k])
+            }
+        </script>
+    </head>
+    <body>
+        <h1>nutrients</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>rev</th>
+                    <th>name</th>
+                    <th>carbs</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <form>
+            <label for="id">Id</label><input id="id" type="text" readonly>
+            <label for="rev">Rev</label><input id="rev" type="text" readonly>
+            <label for="name">Name</label><input id="name" type="text">
+            <label for="carbs">Carbs</label><input id="carbs" type="number">
+            <input type="submit" value="Add">
+        </form>
+    </body>
+</html>
