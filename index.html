@@ -8,10 +8,11 @@
 
             window.onload = async () => {
                 document.querySelector('form input[type="submit"]')
-                    .addEventListener('click', async ({ target }) => {
-                        await setNutrient(target.parentNode)
-                        window.location = window.location.toString().slice(0, -'#new'.length)
-                    })
+                    .addEventListener('click', onSubmitClick)
+            }
+            async function onSubmitClick ({ target }) {
+                await setNutrient(target.parentNode)
+                window.location = window.location.toString().replace('#new', '')
             }
             async function setNutrient (form) {                
                 const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
@@ -30,6 +31,8 @@
                 Object.keys(data).forEach(k => newRow
                     .querySelector(`[name="${k}"]`)
                     .setAttribute('value', data[k]))
+                newRow.querySelector('[type="submit"]')
+                    .addEventListener('click', onSubmitClick)
                 document.getElementById('index').appendChild(newRow)
             }
             function rowClicked ({ target }) {
