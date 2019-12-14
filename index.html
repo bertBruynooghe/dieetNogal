@@ -24,7 +24,7 @@
             function addToTable ({ id, doc: { name, carbs }, changes }) {
                 const tr = document.querySelector('tbody')
                     .appendChild(document.createElement('tr'))
-                tr.addEventListener('click', rowClicked)
+                // tr.addEventListener('click', rowClicked)
                 const rev = changes.pop().rev
                 tr.appendChild(document.createElement('td')).innerText = id
                 tr.appendChild(document.createElement('td')).innerText = rev
@@ -38,16 +38,22 @@
                     .forEach((v, k) => document.querySelector(`input#${v}`).value = values[k])
             }
         </script>
+        <style>
+            #new:target table { display: none }
+            #new:target form { display: block }
+            form { display: none; }
+        </style>
     </head>
-    <body>
+    <body id="new">
         <h1>nutrients</h1>
-        <table>
+        <table id="index">
             <thead>
                 <tr>
                     <th>id</th>
                     <th>rev</th>
                     <th>name</th>
                     <th>carbs</th>
+                    <td><a href="#new">new</a></td>
                 </tr>
             </thead>
             <tbody>
