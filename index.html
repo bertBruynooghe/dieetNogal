@@ -15,6 +15,11 @@
                 await setNutrient(e.target.parentNode)
                 window.location = window.location.toString().replace('#new', '')
             }
+            async function onDeleteClicked (e) {
+                e.preventDefault()
+                await deleteNutrient(e.target.parentNode)
+                window.location.reload()
+            }
             async function setNutrient (form) {                
                 const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
                     .map(n => form.querySelector(`[name="${n}"]`).value)
@@ -22,8 +27,14 @@
                 const _id = id || new Date().toISOString()
                 await nutrientsDb.put({ _id, _rev, name, carbs })
             }
+            async function deleteNutrient (form) {
+                const [id, rev] = ['id', 'rev']
+                    .map(n => form.querySelector(`[name="${n}"]`).value)
+                return nutrientsDb.remove(id, rev)
+                window.location.reload()
+            }
             function applyChanges (changes) {
-                for (const c of changes) addToTable(c)
+                changes.filter(c => !c.doc._deleted).forEach(c => addToTable(c))
             }
             function addToTable ({ id, doc: { name, carbs }, changes }) {
                 const data = { id, rev: changes.pop().rev, name, carbs }
@@ -34,6 +45,9 @@
                     .setAttribute('value', data[k]))
                 newRow.querySelector('[type="submit"][value="Save"]')
                     .addEventListener('click', onSaveClicked)
+                const deleteBtn = newRow.querySelector('[type="submit"][value="Delete"]')
+                deleteBtn.removeAttribute('hidden')
+                deleteBtn.addEventListener('click', onDeleteClicked)
                 newRow.querySelector('a').remove()
                 document.getElementById('index').appendChild(newRow)
             }
@@ -67,6 +81,7 @@
                 <label><span>Carbs</span><input name="carbs" type="number"></label>
                 <a href="#" hidden>Back</a>
                 <input type="submit" value="Save">
+                <input type="submit" value="Delete" hidden>
             </form>
         </div>
     </body>
