@@ -6,12 +6,13 @@
             nutrientsDb.changes({ since: 0, include_docs: true })
                 .then(changes => applyChanges(changes.results))
 
-            window.onload = async () => {
-                document.querySelector('form input[type="submit"]')
-                    .addEventListener('click', onSubmitClick)
+            window.onload = () => {
+                document.querySelector('[type="submit"][value="Save"]')
+                    .addEventListener('click', onSaveClicked)
             }
-            async function onSubmitClick ({ target }) {
-                await setNutrient(target.parentNode)
+            async function onSaveClicked (e) {
+                e.preventDefault()
+                await setNutrient(e.target.parentNode)
                 window.location = window.location.toString().replace('#new', '')
             }
             async function setNutrient (form) {                
@@ -31,16 +32,10 @@
                 Object.keys(data).forEach(k => newRow
                     .querySelector(`[name="${k}"]`)
                     .setAttribute('value', data[k]))
-                newRow.querySelector('[type="submit"]')
-                    .addEventListener('click', onSubmitClick)
+                newRow.querySelector('[type="submit"][value="Save"]')
+                    .addEventListener('click', onSaveClicked)
                 newRow.querySelector('a').remove()
                 document.getElementById('index').appendChild(newRow)
-            }
-            function rowClicked ({ target }) {
-                const values = [...target.parentNode.querySelectorAll('tbody *')]
-                    .map(n => n.innerText);
-                ['id', 'rev', 'name', 'carbs']
-                    .forEach((v, k) => document.querySelector(`input#${v}`).value = values[k])
             }
         </script>
         <style>
