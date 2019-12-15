@@ -26,7 +26,7 @@
             }
             function addToTable ({ id, doc: { name, carbs }, changes }) {
                 const data = { id, rev: changes.pop().rev, name, carbs }
-                const newRow = document.querySelector('#new > form > fieldset > div').cloneNode(true)
+                const newRow = document.querySelector('#newNutrient form').cloneNode(true)
 
                 Object.keys(data).forEach(k => newRow
                     .querySelector(`[name="${k}"]`)
@@ -34,8 +34,7 @@
                 newRow.querySelector('[type="submit"]')
                     .addEventListener('click', onSubmitClick)
                 newRow.querySelector('a').remove()
-                document.getElementById('index')
-                    .appendChild(document.createElement('form').appendChild(newRow))
+                document.getElementById('index').appendChild(newRow)
             }
             function rowClicked ({ target }) {
                 const values = [...target.parentNode.querySelectorAll('tbody *')]
@@ -46,8 +45,9 @@
         </script>
         <style>
             #new:target #index { display: none }
-            #new:target form { display: block }
-            form { display: none; }
+            #new:target #newNutrient { display: block }
+            #new:target #newNutrient a { display: inline; }
+            #newNutrient { display: none; }
             #index { display: table; }
             #index > * { display:table-row; visibility:visible; }
             #index > * > * { display:table-cell; }
@@ -55,26 +55,24 @@
         </style>
     </head>
     <body id="new">
-        <h1>nutrients</h1>
         <div id="index">
+            <h1>Nutrients</h1>
             <div hidden>
                 <div>name</div>
                 <div>carbs</div>
                 <div><a href="#new">new</a></div>
             </div>
         </div>
-        <form>
-            <fieldset>
-                <legend>New</legend>
-                <div>
-                    <input name="id" type="hidden">
-                    <input name="rev" type="hidden">
-                    <label><span>Name</span><input name="name" type="text"></label>
-                    <label><span>Carbs</span><input name="carbs" type="number"></label>
-                    <a href="#">Back</a>
-                    <input type="submit" value="Save">
-                </div>
-            </fieldset>
-        </form>
+        <div id="newNutrient">
+            <h1>New nutrient</h1>
+            <form>
+                <input name="id" type="hidden">
+                <input name="rev" type="hidden">
+                <label><span>Name</span><input name="name" type="text"></label>
+                <label><span>Carbs</span><input name="carbs" type="number"></label>
+                <a href="#" hidden>Back</a>
+                <input type="submit" value="Save">
+            </form>
+        </div>
     </body>
 </html>
