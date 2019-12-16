@@ -61,6 +61,10 @@
             #index > * { display:table-row; visibility:visible; }
             #index > * > * { display:table-cell; }
             #index label > span { display: none; }
+            [name="carbs"] { width: 3em; }
+            #newNutrient form { display: flex; flex-direction: column; }
+            #newNutrient form > label { display: flex; flex-direction: row; align-items: baseline; }
+            #newNutrient div { flex-grow: 1; display: flex; justify-content: flex-end; }
         </style>
     </head>
     <body id="new">
@@ -82,9 +86,11 @@
                     <span>Carbs</span>
                     <input name="carbs" type="number" inputmode="decimal" pattern="[0-9]*" novalidate>
                 </label>
-                <a href="#" hidden>Back</a>
-                <input type="submit" value="Save">
-                <input type="submit" value="Delete" hidden>
+                <div>
+                    <a href="#" hidden>Back</a>
+                    <input type="submit" value="Save">
+                    <input type="submit" value="Delete" hidden>
+                </div>
             </form>
         </div>
     </body>
