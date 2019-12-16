@@ -13,8 +13,9 @@
                     .addEventListener('click', onSaveClicked)
             }
             async function onSaveClicked (e) {
+                console.log('on save clicked', e)
                 e.preventDefault()
-                await setNutrient(e.target.parentNode)
+                await setNutrient(e.target.form)
                 window.location = window.location.toString().replace('#new', '')
             }
             async function onDeleteClicked (e) {
@@ -22,7 +23,7 @@
                 await deleteNutrient(e.target.parentNode)
                 window.location.reload()
             }
-            async function setNutrient (form) {                
+            async function setNutrient (form) {
                 const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
                     .map(n => form.querySelector(`[name="${n}"]`).value)
                 const carbs = Number.parseFloat(carbsStr)
