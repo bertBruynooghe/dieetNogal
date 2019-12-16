@@ -78,7 +78,10 @@
                 <input name="id" type="hidden">
                 <input name="rev" type="hidden">
                 <label><span>Name</span><input name="name" type="text"></label>
-                <label><span>Carbs</span><input name="carbs" type="number"></label>
+                <label>
+                    <span>Carbs</span>
+                    <input name="carbs" type="number" inputmode="decimal" pattern="[0-9]*" novalidate>
+                </label>
                 <a href="#" hidden>Back</a>
                 <input type="submit" value="Save">
                 <input type="submit" value="Delete" hidden>
