@@ -20,7 +20,7 @@
             }
             async function onDeleteClicked (e) {
                 e.preventDefault()
-                await deleteNutrient(e.target.parentNode)
+                await deleteNutrient(e.target.form)
                 window.location.reload()
             }
             async function setNutrient (form) {
