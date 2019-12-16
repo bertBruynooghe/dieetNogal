@@ -3,9 +3,8 @@
         <script src="https://cdn.jsdelivr.net/pouchdb/5.4.5/pouchdb.min.js"></script>
         <script>
             const nutrientsDb = new PouchDB('nutrients')
-            nutrientsDb.changes({ since: 0, include_docs: true })
+            nutrientsDb.changes({ since: 0, include_docs: true, descending: true })
                 .then(changes => applyChanges(changes.results))
-
             window.onload = () => {
                 document.querySelector('[type="submit"][value="Save"]')
                     .addEventListener('click', onSaveClicked)
