@@ -3,6 +3,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta names="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="stylesheet" href="https://cdn.rawgit.com/Chalarangelo/mini.css/v3.0.1/dist/mini-default.min.css">
         <script src="https://cdn.jsdelivr.net/pouchdb/5.4.5/pouchdb.min.js"></script>
         <script>
             const nutrientsDb = new PouchDB('nutrients')
@@ -60,24 +61,19 @@
             #new:target #newNutrient { display: block }
             #new:target #newNutrient a { display: inline; }
             #newNutrient { display: none; }
-            #index { display: table; }
-            #index > * { display:table-row; visibility:visible; }
-            #index > * > * { display:table-cell; }
-            #index label > span { display: none; }
+
             [name="carbs"] { width: 3em; }
             #newNutrient form { display: flex; flex-direction: column; }
             #newNutrient form > label { display: flex; flex-direction: row; align-items: baseline; }
             #newNutrient div { flex-grow: 1; display: flex; justify-content: flex-end; }
+            /* overrides for mini.css */
+            input[type][hidden]{ display: none; }
         </style>
     </head>
     <body id="new">
         <div id="index">
             <h1>Nutrients</h1>
-            <div hidden>
-                <div>name</div>
-                <div>carbs</div>
-                <div><a href="#new">new</a></div>
-            </div>
+            <a href="#new" class="button">new</a>
         </div>
         <div id="newNutrient">
             <h1>New nutrient</h1>
@@ -92,7 +88,7 @@
                     <input name="carbs" type="number" inputmode="decimal" pattern="[0-9]*" novalidate>
                 </label>
                 <div>
-                    <a href="#" hidden tabindex="-1">Back</a>
+                    <a href="#" hidden tabindex="-1" class="Button">Back</a>
                     <input type="submit" value="Save">
                     <input type="submit" value="Delete" hidden>
                 </div>
