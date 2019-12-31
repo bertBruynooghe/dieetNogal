@@ -17,7 +17,7 @@
                 console.log('on save clicked', e)
                 e.preventDefault()
                 await setNutrient(e.target.form)
-                window.location = window.location.toString().replace('#new', '')
+                window.location = window.location.toString().replace('#newNutrient', '')
             }
             async function onDeleteClicked (e) {
                 e.preventDefault()
@@ -42,7 +42,7 @@
             }
             function addToTable ({ id, doc: { name, carbs }, changes }) {
                 const data = { id, rev: changes.pop().rev, name, carbs }
-                const newRow = document.querySelector('#newNutrient form').cloneNode(true)
+                const newRow = document.querySelector('.newNutrient form').cloneNode(true)
 
                 Object.keys(data).forEach(k => newRow
                     .querySelector(`[name="${k}"]`)
@@ -53,29 +53,29 @@
                 deleteBtn.removeAttribute('hidden')
                 deleteBtn.addEventListener('click', onDeleteClicked)
                 newRow.querySelector('a').remove()
-                document.getElementById('index').appendChild(newRow)
+                document.querySelector('.nutrients').appendChild(newRow)
             }
         </script>
         <style>
-            #new:target #index { display: none }
-            #new:target #newNutrient { display: block }
-            #new:target #newNutrient a { display: inline; }
-            #newNutrient { display: none; }
+            #newNutrient:target .nutrients { display: none }
+            #newNutrient:target .newNutrient { display: block }
+            #newNutrient:target .newNutrient a { display: inline; }
+            .newNutrient { display: none; }
 
             [name="carbs"] { width: 3em; }
-            #newNutrient form { display: flex; flex-direction: column; }
-            #newNutrient form > label { display: flex; flex-direction: row; align-items: baseline; }
-            #newNutrient div { flex-grow: 1; display: flex; justify-content: flex-end; }
+            .newNutrient form { display: flex; flex-direction: column; }
+            .newNutrient form > label { display: flex; flex-direction: row; align-items: baseline; }
+            .newNutrient div { flex-grow: 1; display: flex; justify-content: flex-end; }
             /* overrides for mini.css */
             input[type][hidden]{ display: none; }
         </style>
     </head>
-    <body id="new">
-        <div id="index">
+    <body id="newNutrient">
+        <div class="nutrients">
             <h1>Nutrients</h1>
-            <a href="#new" class="button">new</a>
+            <a href="#newNutrient" class="button">new</a>
         </div>
-        <div id="newNutrient">
+        <div class="newNutrient">
             <h1>New nutrient</h1>
             <form>
                 <input name="id" type="hidden">
