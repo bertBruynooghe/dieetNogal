@@ -57,8 +57,13 @@
             }
         </script>
         <style>
-            #newNutrient:target .nutrients { display: none }
-            #newNutrient:target .newNutrient { display: block }
+            /* paging */
+            body > * { display: none; }
+            body > *.nutrients { display: block; }
+
+            body > #newNutrient:target ~ * { display: none; }
+            body > #newNutrient:target ~ *.newNutrient { display: block; }
+
             #newNutrient:target .newNutrient a { display: inline; }
             .newNutrient { display: none; }
 
@@ -70,7 +75,8 @@
             input[type][hidden]{ display: none; }
         </style>
     </head>
-    <body id="newNutrient">
+    <body>
+        <div id="newNutrient"></div>
         <div class="nutrients">
             <h1>Nutrients</h1>
             <a href="#newNutrient" class="button">new</a>
