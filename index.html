@@ -10,7 +10,7 @@
             nutrientsDb.changes({ since: 0, include_docs: true, descending: true })
                 .then(changes => applyChanges(changes.results))
             window.onload = () => {
-                document.querySelector('[type="submit"][value="Save"]')
+                document.querySelector('[name="save"]')
                     .addEventListener('click', onSaveClicked)
                 document.querySelector('[name="signIn"]')
                     .addEventListener('click', onSignIn)
@@ -52,9 +52,9 @@
                 Object.keys(data).forEach(k => newRow
                     .querySelector(`[name="${k}"]`)
                     .setAttribute('value', data[k]))
-                newRow.querySelector('[type="submit"][value="Save"]')
+                newRow.querySelector('[name="saveNutrient"]')
                     .addEventListener('click', onSaveClicked)
-                const deleteBtn = newRow.querySelector('[type="submit"][value="Delete"]')
+                const deleteBtn = newRow.querySelector('[name="deleteNutrient"]')
                 deleteBtn.removeAttribute('hidden')
                 deleteBtn.addEventListener('click', onDeleteClicked)
                 newRow.querySelector('a').remove()
@@ -106,8 +106,8 @@
                 </label>
                 <div>
                     <a href="#nutrients" hidden tabindex="-1" class="Button">Back</a>
-                    <input type="submit" value="Save">
-                    <input type="submit" value="Delete" hidden>
+                    <input type="submit" value="Save" name="saveNutrient">
+                    <input type="submit" value="Delete" name="deleteNutrient" hidden>
                 </div>
             </form>
         </div>
