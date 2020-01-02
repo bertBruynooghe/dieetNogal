@@ -10,6 +10,8 @@
             nutrientsDb.changes({ since: 0, include_docs: true, descending: true })
                 .then(changes => applyChanges(changes.results))
             window.onload = () => {
+                if (0 > window.location.toString().indexOf('#'))
+                    window.location += '#signIn'
                 document.querySelector('[name="save"]')
                     .addEventListener('click', onSaveClicked)
                 document.querySelector('[name="signIn"]')
