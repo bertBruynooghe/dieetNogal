@@ -7,8 +7,9 @@
         <script src="https://cdn.jsdelivr.net/pouchdb/5.4.5/pouchdb.min.js"></script>
         <script>
             const credentials = {}
-            const nutrientsDb = new PouchDB('nutrients')
-            nutrientsDb.changes({ since: 0, include_docs: true, descending: true })
+            const localDb = new PouchDB('nutrients')
+            let remoteDb = undefined
+            localDb.changes({ since: 0, include_docs: true, descending: true })
                 .then(changes => applyChanges(changes.results))
             window.onload = () => {
                 if (0 > window.location.toString().indexOf('#'))
@@ -21,11 +22,22 @@
             function onSignIn (e) {
                 e.preventDefault()
                 setCredentials()
+                const { username, password } = credentials
+                const url = 'ed4dbd8c-a8fd-4fd7-8ff5-7a9d5481f619-bluemix.cloudantnosqldb.appdomain.cloud'
+                remoteDb = new PouchDB(`https://${username}:${password}@${url}/nutrients`)
+                localDb.sync(remoteDb)
+                    .on('complete', () => window.alert('synced'))
+                    .on('error', error => window.alert(`error ${error}`))
                 window.location = window.location.toString().replace('#signIn', '#nutrients')
             }
             async function onSaveClicked (e) {
                 e.preventDefault()
                 await setNutrient(e.target.form)
+                await new Promise(resolve => 
+                localDb.sync(remoteDb)
+                    .on('complete', resolve)
+                    .on('error', resolve)
+                )
                 window.location = window.location.toString().replace('#newNutrient', '#nutrients')
             }
             async function onDeleteClicked (e) {
@@ -44,12 +56,12 @@
                     .map(n => form.querySelector(`[name="${n}"]`).value)
                 const carbs = Number.parseFloat(carbsStr)
                 const _id = id || new Date().toISOString()
-                await nutrientsDb.put({ _id, _rev, name, carbs })
+                await localDb.put({ _id, _rev, name, carbs })
             }
             async function deleteNutrient (form) {
                 const [id, rev] = ['id', 'rev']
                     .map(n => form.querySelector(`[name="${n}"]`).value)
-                return nutrientsDb.remove(id, rev)
+                return localDb.remove(id, rev)
                 window.location.reload()
             }
             function applyChanges (changes) {
