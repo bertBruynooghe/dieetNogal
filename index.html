@@ -17,7 +17,7 @@
                 console.log('on save clicked', e)
                 e.preventDefault()
                 await setNutrient(e.target.form)
-                window.location = window.location.toString().replace('#newNutrient', '')
+                window.location = window.location.toString().replace('#newNutrient', '#nutrients')
             }
             async function onDeleteClicked (e) {
                 e.preventDefault()
@@ -42,7 +42,7 @@
             }
             function addToTable ({ id, doc: { name, carbs }, changes }) {
                 const data = { id, rev: changes.pop().rev, name, carbs }
-                const newRow = document.querySelector('.newNutrient form').cloneNode(true)
+                const newRow = document.querySelector('#newNutrient form').cloneNode(true)
 
                 Object.keys(data).forEach(k => newRow
                     .querySelector(`[name="${k}"]`)
@@ -53,35 +53,32 @@
                 deleteBtn.removeAttribute('hidden')
                 deleteBtn.addEventListener('click', onDeleteClicked)
                 newRow.querySelector('a').remove()
-                document.querySelector('.nutrients').appendChild(newRow)
+                document.getElementById('nutrients').appendChild(newRow)
             }
         </script>
         <style>
             /* paging */
             body > * { display: none; }
-            body > *.nutrients { display: block; }
+            body > #startLink { display: inline;}
+            body > *:target { display: block; }
+            body > *:target ~ * { display: none; }
 
-            body > #newNutrient:target ~ * { display: none; }
-            body > #newNutrient:target ~ *.newNutrient { display: block; }
+            /* end of paging logic */
 
-            #newNutrient:target .newNutrient a { display: inline; }
-            .newNutrient { display: none; }
-
-            [name="carbs"] { width: 3em; }
-            .newNutrient form { display: flex; flex-direction: column; }
-            .newNutrient form > label { display: flex; flex-direction: row; align-items: baseline; }
-            .newNutrient div { flex-grow: 1; display: flex; justify-content: flex-end; }
+            [name="carbs"] { width: 5em; }
+            #newNutrient form { display: flex; flex-direction: column; }
+            #newNutrient form > label { display: flex; flex-direction: row; align-items: baseline; }
+            #newNutrient div { flex-grow: 1; display: flex; justify-content: flex-end; }
             /* overrides for mini.css */
             input[type][hidden]{ display: none; }
         </style>
     </head>
     <body>
-        <div id="newNutrient"></div>
-        <div class="nutrients">
+        <div id="nutrients">
             <h1>Nutrients</h1>
             <a href="#newNutrient" class="button">new</a>
         </div>
-        <div class="newNutrient">
+        <div id="newNutrient">
             <h1>New nutrient</h1>
             <form>
                 <input name="id" type="hidden">
@@ -94,11 +91,12 @@
                     <input name="carbs" type="number" inputmode="decimal" pattern="[0-9]*" novalidate>
                 </label>
                 <div>
-                    <a href="#" hidden tabindex="-1" class="Button">Back</a>
+                    <a href="#nutrients" hidden tabindex="-1" class="Button">Back</a>
                     <input type="submit" value="Save">
                     <input type="submit" value="Delete" hidden>
                 </div>
             </form>
         </div>
+        <a href="#nutrients" id="startLink">Klik om verder te gaan</a>
     </body>
 </html>
