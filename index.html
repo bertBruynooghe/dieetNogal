@@ -9,6 +9,11 @@
             const credentials = {}
             const localDb = new PouchDB('nutrients')
             let remoteDb = undefined
+            // if ('serviceWorker' in navigator) {
+            //     navigator.serviceWorker.register('./sw.js')
+            //         /* .then(r => console.log('Registration Successful', r)) */,
+            //     e => console.log('Registration Failed', e)
+            // }
             localDb.changes({ since: 0, include_docs: true, descending: true })
                 .then(changes => applyChanges(changes.results))
             window.onload = () => {
@@ -23,21 +28,23 @@
                 e.preventDefault()
                 setCredentials()
                 const { username, password } = credentials
-                const url = 'ed4dbd8c-a8fd-4fd7-8ff5-7a9d5481f619-bluemix.cloudantnosqldb.appdomain.cloud'
-                remoteDb = new PouchDB(`https://${username}:${password}@${url}/nutrients`)
-                localDb.sync(remoteDb)
-                    .on('complete', () => window.alert('synced'))
-                    .on('error', error => window.alert(`error ${error}`))
+                // const url = `${window.location.protocol}//${username}:${password}@${window.location.host}/db/nutrients`
+                const url = `https://${username}:${password}@ed4dbd8c-a8fd-4fd7-8ff5-7a9d5481f619-bluemix.cloudantnosqldb.appdomain.cloud/nutrients`
+                console.log({ url })
+                remoteDb = new PouchDB(url)
+                // localDb.sync(remoteDb)
+                //     .on('complete', () => console.log('synced'))
+                //     .on('error', error => console.log(error))
                 window.location = window.location.toString().replace('#signIn', '#nutrients')
             }
             async function onSaveClicked (e) {
                 e.preventDefault()
                 await setNutrient(e.target.form)
                 await new Promise(resolve => 
-                localDb.sync(remoteDb)
-                    .on('complete', resolve)
-                    .on('error', resolve)
-                )
+                // localDb.sync(remoteDb)
+                //     .on('complete', resolve)
+                //     .on('error', resolve)
+                // )
                 window.location = window.location.toString().replace('#newNutrient', '#nutrients')
             }
             async function onDeleteClicked (e) {
