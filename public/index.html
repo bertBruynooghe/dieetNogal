@@ -40,13 +40,14 @@
             async function onSaveClicked (e) {
                 e.preventDefault()
                 await setNutrient(e.target.form)
-                await new Promise(resolve => 
+                // await new Promise(resolve => 
                 // localDb.sync(remoteDb)
                 //     .on('complete', resolve)
                 //     .on('error', resolve)
                 // )
                 window.location = window.location.toString().replace('#newNutrient', '#nutrients')
             }
+
             async function onDeleteClicked (e) {
                 e.preventDefault()
                 await deleteNutrient(e.target.form)
