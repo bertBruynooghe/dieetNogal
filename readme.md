@@ -1,5 +1,6 @@
 # DieetNogal
 PWA-to-be to calculate carbs of meals/snacks.
+Open in `https://dieet-nogal.herokuapp.com`
 
 ## TODO
 
