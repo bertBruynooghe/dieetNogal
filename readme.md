@@ -5,9 +5,9 @@ Open in `https://dieet-nogal.herokuapp.com`
 ## TODO
 
 * responsive styling
-* express server
+* express server: generate htmls iso. using public folder
 * hijacking submits in WebWorker
-* couchdb support
+* couchdb support: better synching
 * passport integration
 * no javascript version
 

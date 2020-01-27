@@ -28,23 +28,21 @@
                 e.preventDefault()
                 setCredentials()
                 const { username, password } = credentials
-                // const url = `${window.location.protocol}//${username}:${password}@${window.location.host}/db/nutrients`
-                const url = `https://${username}:${password}@ed4dbd8c-a8fd-4fd7-8ff5-7a9d5481f619-bluemix.cloudantnosqldb.appdomain.cloud/nutrients`
-                console.log({ url })
+                const url = `${window.location.protocol}//${username}:${password}@${window.location.host}/db/nutrients`
                 remoteDb = new PouchDB(url)
-                // localDb.sync(remoteDb)
-                //     .on('complete', () => console.log('synced'))
-                //     .on('error', error => console.log(error))
+                localDb.sync(remoteDb)
+                    .on('complete', () => console.log('synced'))
+                    .on('error', error => console.log(error))
                 window.location = window.location.toString().replace('#signIn', '#nutrients')
             }
             async function onSaveClicked (e) {
                 e.preventDefault()
                 await setNutrient(e.target.form)
-                // await new Promise(resolve => 
-                // localDb.sync(remoteDb)
-                //     .on('complete', resolve)
-                //     .on('error', resolve)
-                // )
+                await new Promise(resolve => 
+                localDb.sync(remoteDb)
+                    .on('complete', resolve)
+                    .on('error', resolve)
+                )
                 window.location = window.location.toString().replace('#newNutrient', '#nutrients')
             }
 
@@ -57,7 +55,6 @@
                 const [username, password] = ['username', 'password']
                     .map(n => document.querySelector(`[name="${n}"]`).value)
                 Object.assign(credentials, { username, password })
-                // console.log(credentials)
             }
             async function setNutrient (form) {
                 const [name, id, _rev, carbsStr] = ['name', 'id', 'rev', 'carbs']
