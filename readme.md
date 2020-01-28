@@ -20,3 +20,7 @@ This is not needed yet on the hosting platform.
 
 Starting chrome without CORS:
 `open -a Google\ Chrome --args --disable-web-security --user-data-dir `
+
+## Deploy
+
+`git push heroku`

@@ -28,8 +28,8 @@
                 e.preventDefault()
                 setCredentials()
                 const { username, password } = credentials
-                const url = `${window.location.protocol}//${username}:${password}@${window.location.host}/db/nutrients`
-                remoteDb = new PouchDB(url)
+                const url = `${window.location.protocol}//${window.location.host}/db/nutrients`
+                remoteDb = new PouchDB(url, { auth: { username, password }})
                 localDb.sync(remoteDb)
                     .on('complete', () => console.log('synced'))
                     .on('error', error => console.log(error))
