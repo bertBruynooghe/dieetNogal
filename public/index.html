@@ -23,7 +23,14 @@
                     .addEventListener('click', onSaveClicked)
                 document.querySelector('[name="signIn"]')
                     .addEventListener('click', onSignIn)
+                document.querySelector('#passwordVisibility')
+                    .addEventListener('change', onPasswordVisibilityChange)
             }
+            function onPasswordVisibilityChange (e) {
+                const passwordInput = document.querySelector('[name="password"]')
+                passwordInput.setAttribute('type', e.target.checked ? 'text' : 'password')
+            }
+
             function onSignIn (e) {
                 e.preventDefault()
                 setCredentials()
@@ -110,6 +117,7 @@
             <form>
                 <label>username<input type="text" name="username"></label>
                 <label>password<input type="password" name="password"></label>
+                <label><input type="checkbox" id="passwordVisibility">Show Password</label>
                 <div>
                     <input type="submit" value="Sign in" name="signIn">
                 </div>
