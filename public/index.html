@@ -18,13 +18,14 @@
                 .then(changes => applyChanges(changes.results))
             window.onload = () => {
                 if (0 > window.location.toString().indexOf('#'))
-                    window.location += '#signIn'
-                document.querySelector('[name="saveNutrient"]')
-                    .addEventListener('click', onSaveClicked)
-                document.querySelector('[name="signIn"]')
-                    .addEventListener('click', onSignIn)
-                document.querySelector('#passwordVisibility')
-                    .addEventListener('change', onPasswordVisibilityChange)
+                    window.location += '#signIn';
+                [
+                    ['[name="saveNutrient"]', 'click', onSaveClicked],
+                    ['[name="signIn"]', 'click', onSignIn],
+                    ['#passwordVisibility', 'change', onPasswordVisibilityChange]
+                ].forEach(([selector, eventName, func]) =>
+                    document.querySelector(selector)
+                        .addEventListener(eventName, func))
             }
             function onPasswordVisibilityChange (e) {
                 const passwordInput = document.querySelector('[name="password"]')
